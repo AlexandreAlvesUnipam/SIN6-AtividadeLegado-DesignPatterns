@@ -12,6 +12,7 @@ import com.exemplo.notificacao.model.Pedido;
 @SpringBootApplication
 public class NotificacaoApplication implements CommandLineRunner {
 
+    // Usa PedidoService para criar pedidos.
     @Autowired
     private PedidoService pedidoService;
 
@@ -23,10 +24,11 @@ public class NotificacaoApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("=== Sistema de Notificação de Pedidos ===");
 
-        // exemplo usando PedidoService (que delega para NotificacaoService)
-        pedidoService.criarPedido("João", 150.0);
-        pedidoService.criarPedido("Maria", 320.0);
-        pedidoService.criarPedido("Carlos", 80.0);
+        // Cria os pedidos.
+        // Automaticamente todos os observadores são avisados.
+        pedidoService.criarPedido("Kaio Jorge", 19.0);
+        pedidoService.criarPedido("Matheus Pereira", 10.0);
+        pedidoService.criarPedido("Gabriel Barbosa", 9.0);
 
         System.out.println("=== Fim da execução ===");
     }

@@ -3,6 +3,8 @@ package com.exemplo.notificacao.service;
 import com.exemplo.notificacao.model.Pedido;
 import org.springframework.stereotype.Service;
 
+// Essa clase cria o pedido e pede para NotificacaoService avisar os oservadores.
+
 @Service
 public class PedidoService {
 
@@ -15,7 +17,8 @@ public class PedidoService {
     public void criarPedido(String cliente, double valor) {
         Pedido pedido = new Pedido(cliente, valor);
         System.out.println("Pedido criado para o cliente: " + cliente);
-        // Agora delegamos a notificação ao Subject (NotificacaoService)
+
+        // Onde o NotificacaoService avisa todos os observadores.
         notificacaoService.notificarObservadores(pedido);
     }
 }

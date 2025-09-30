@@ -8,28 +8,31 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+// Classe mãe das notificações
+// Ela guarda uma lista de todos os serviços que querem receber avisos, email, sms e push.
+// Quando um pedido novo é criado, ela avisa todos de uma vez.
+
 @Service
 public class NotificacaoService {
 
     private final CopyOnWriteArrayList<ObservadorPedido> observadores;
 
-    /**
-     * O Spring injeta todos os beans que implementam ObservadorPedido.
-     * Criamos uma CopyOnWriteArrayList para permitir registro/remocao seguro em tempo de execução.
-     */
     @Autowired
     public NotificacaoService(List<ObservadorPedido> observadores) {
         this.observadores = new CopyOnWriteArrayList<>(observadores);
     }
 
+    // Registrar manualmente outro observador
     public void registrar(ObservadorPedido observador) {
         observadores.addIfAbsent(observador);
     }
 
+    // Remover alugm observador
     public void remover(ObservadorPedido observador) {
         observadores.remove(observador);
     }
 
+    // Método que chama todos os observadores.
     public void notificarObservadores(Pedido pedido) {
         for (ObservadorPedido observador : observadores) {
             try {

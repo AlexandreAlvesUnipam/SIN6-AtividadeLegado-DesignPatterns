@@ -4,6 +4,8 @@ import com.exemplo.notificacao.model.Pedido;
 import com.exemplo.notificacao.observer.ObservadorPedido;
 import org.springframework.stereotype.Service;
 
+// Recebe o aviso de novos pedidos.
+
 @Service
 public class SmsService implements ObservadorPedido {
 
