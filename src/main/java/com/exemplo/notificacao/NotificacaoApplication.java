@@ -1,34 +1,43 @@
 package com.exemplo.notificacao;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.exemplo.notificacao.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.exemplo.notificacao.service.NotificacaoService;
-import com.exemplo.notificacao.model.Pedido;
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class NotificacaoApplication implements CommandLineRunner {
 
     @Autowired
-    private NotificacaoService notificacaoService;
+    private PedidoService pedidoService;
 
     public static void main(String[] args) {
         SpringApplication.run(NotificacaoApplication.class, args);
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        System.out.println("=== Sistema de Notificação de Pedidos ===");
+    public void run(String... args) {
+        System.out.println("=== Sistema de Notificação de Pedidos (cenários complexos) ===");
 
-        Pedido pedido1 = new Pedido("João", 150.0);
-        Pedido pedido2 = new Pedido("Maria", 320.0);
-        Pedido pedido3 = new Pedido("Carlos", 80.0);
+        // Básicos
+        pedidoService.criarPedido("João", 150.0);
+        pedidoService.criarPedido("Maria", 320.0);
 
-        notificacaoService.enviarNotificacoes(pedido1);
-        notificacaoService.enviarNotificacoes(pedido2);
-        notificacaoService.enviarNotificacoes(pedido3);
+        // Valores “limite”
+        pedidoService.criarPedido("ValorZero", 0.0);
+        pedidoService.criarPedido("ValorAlto", 999_999.99);
+
+        // Nomes com caracteres especiais/emoji
+        pedidoService.criarPedido("Ana-Clara 🚀", 87.45);
+
+        // Muitos pedidos em sequência
+        for (int i = 1; i <= 10; i++) {
+            pedidoService.criarPedido("Lote-" + i, i * 10.0);
+        }
+
+        // (Opcional) Carga paralela simples
+        java.util.stream.IntStream.range(0, 20).parallel()
+            .forEach(i -> pedidoService.criarPedido("Paralelo-" + i, i + 0.99));
 
         System.out.println("=== Fim da execução ===");
     }

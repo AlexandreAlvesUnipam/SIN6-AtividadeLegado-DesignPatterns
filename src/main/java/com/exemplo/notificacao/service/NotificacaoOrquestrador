@@ -1,0 +1,31 @@
+package com.exemplo.notificacao.service;
+
+import java.util.List;
+
+import com.exemplo.notificacao.events.PedidoCriadoEvent;
+import com.exemplo.notificacao.model.Pedido;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+@Component
+public class NotificacaoOrquestrador {
+
+    private final List<NotificacaoStrategy> estrategias;
+
+    public NotificacaoOrquestrador(List<NotificacaoStrategy> estrategias) {
+        this.estrategias = estrategias;
+    }
+
+    @EventListener
+    public void onPedidoCriado(PedidoCriadoEvent event) {
+        Pedido pedido = event.getPedido();
+        estrategias.forEach(estrategia -> {
+            try {
+                estrategia.notificar(pedido);
+            } catch (Exception e) {
+                System.err.printf("Falha ao notificar via %s: %s%n",
+                        estrategia.canal(), e.getMessage());
+            }
+        });
+    }
+}

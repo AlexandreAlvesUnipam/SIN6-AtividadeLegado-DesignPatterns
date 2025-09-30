@@ -17,8 +17,8 @@ public class NotificacaoService {
     }
 
     public void enviarNotificacoes(Pedido pedido) {
-        emailService.enviar(pedido);
-        smsService.enviar(pedido);
-        pushService.enviar(pedido);
+        emailService.notificar(pedido);
+        smsService.notificar(pedido);
+        pushService.notificar(pedido);
     }
 }
