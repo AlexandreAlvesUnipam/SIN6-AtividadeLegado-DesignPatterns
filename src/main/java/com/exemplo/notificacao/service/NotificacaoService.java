@@ -1,24 +1,34 @@
 package com.exemplo.notificacao.service;
 
 import com.exemplo.notificacao.model.Pedido;
+
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificacaoService {
 
-    private final EmailService emailService;
-    private final SmsService smsService;
-    private final PushService pushService;
+    private ArrayList<IObserver> observers = new ArrayList<>();
 
-    public NotificacaoService(EmailService emailService, SmsService smsService, PushService pushService) {
-        this.emailService = emailService;
-        this.smsService = smsService;
-        this.pushService = pushService;
+    private Pedido pedido;
+
+    public void addObserver(IObserver observer){
+        observers.add(observer);
     }
 
-    public void enviarNotificacoes(Pedido pedido) {
-        emailService.enviar(pedido);
-        smsService.enviar(pedido);
-        pushService.enviar(pedido);
+    public void removeObserver(IObserver observer){
+        observers.remove(observer);
+    }
+
+    public void setPedido(Pedido pedido){
+        this.pedido = pedido;
+        notificar();
+    }
+
+    public void notificar(){
+        for(IObserver observer : observers){
+            observer.enviaNotificacoes(pedido);
+        }
     }
 }

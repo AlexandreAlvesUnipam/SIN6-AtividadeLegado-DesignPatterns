@@ -15,6 +15,6 @@ public class PedidoService {
     public void criarPedido(String cliente, double valor) {
         Pedido pedido = new Pedido(cliente, valor);
         System.out.println("Pedido criado para o cliente: " + cliente);
-        notificacaoService.enviarNotificacoes(pedido);
+        notificacaoService.setPedido(pedido);
     }
 }
