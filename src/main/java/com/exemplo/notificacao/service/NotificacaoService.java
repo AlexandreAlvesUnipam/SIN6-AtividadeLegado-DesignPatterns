@@ -6,19 +6,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificacaoService {
 
-    private final EmailService emailService;
-    private final SmsService smsService;
-    private final PushService pushService;
+    private NotificacaoStrategy strategy;
 
-    public NotificacaoService(EmailService emailService, SmsService smsService, PushService pushService) {
-        this.emailService = emailService;
-        this.smsService = smsService;
-        this.pushService = pushService;
+    public void setStrategy(NotificacaoStrategy strategy) {
+        this.strategy = strategy;
     }
 
     public void enviarNotificacoes(Pedido pedido) {
-        emailService.enviar(pedido);
-        smsService.enviar(pedido);
-        pushService.enviar(pedido);
+        if (strategy != null) {
+            strategy.enviar(pedido, "Mensagem padrão");
+        } else {
+            System.out.println("Nenhuma estratégia de notificação definida!");
+        }
+    }
+
+    public void enviarNotificacao(Pedido pedido1, String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'enviarNotificacao'");
     }
 }
