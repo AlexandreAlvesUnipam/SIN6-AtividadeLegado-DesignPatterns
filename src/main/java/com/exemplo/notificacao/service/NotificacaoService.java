@@ -2,23 +2,40 @@ package com.exemplo.notificacao.service;
 
 import com.exemplo.notificacao.model.Pedido;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Gerenciador de notificações - Padrão Observer.
+ */
 @Service
 public class NotificacaoService {
 
-    private final EmailService emailService;
-    private final SmsService smsService;
-    private final PushService pushService;
+    private final List<Notificador> notificadores;
 
-    public NotificacaoService(EmailService emailService, SmsService smsService, PushService pushService) {
-        this.emailService = emailService;
-        this.smsService = smsService;
-        this.pushService = pushService;
+    public NotificacaoService(List<Notificador> notificadores) {
+        this.notificadores = new ArrayList<>(notificadores);
+        System.out.println("✅ NotificacaoService iniciado com " + 
+                         notificadores.size() + " notificadores");
+    }
+
+    public void adicionarNotificador(Notificador notificador) {
+        notificadores.add(notificador);
+    }
+
+    public void removerNotificador(Notificador notificador) {
+        notificadores.remove(notificador);
     }
 
     public void enviarNotificacoes(Pedido pedido) {
-        emailService.enviar(pedido);
-        smsService.enviar(pedido);
-        pushService.enviar(pedido);
+        System.out.println("\n🔔 ===== NOTIFICAÇÕES =====");
+        System.out.println("Cliente: " + pedido.getCliente());
+        System.out.println("--------------------------");
+        
+        for (Notificador notificador : notificadores) {
+            notificador.notificar(pedido);
+        }
+        
+        System.out.println("==========================\n");
     }
 }
