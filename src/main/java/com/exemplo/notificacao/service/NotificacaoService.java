@@ -1,24 +1,30 @@
 package com.exemplo.notificacao.service;
 
+import com.exemplo.notificacao.event.OrderCreatedEvent;
 import com.exemplo.notificacao.model.Pedido;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+/** Escuta o evento e envia por todos os canais (Strategy + "Composite" via lista). */
 @Service
 public class NotificacaoService {
 
-    private final EmailService emailService;
-    private final SmsService smsService;
-    private final PushService pushService;
+    private final List<Notifier> notifiers;
 
-    public NotificacaoService(EmailService emailService, SmsService smsService, PushService pushService) {
-        this.emailService = emailService;
-        this.smsService = smsService;
-        this.pushService = pushService;
+    public NotificacaoService(List<Notifier> notifiers) {
+        this.notifiers = notifiers;
     }
 
+    /** Também pode ser chamado direto se quiser. */
     public void enviarNotificacoes(Pedido pedido) {
-        emailService.enviar(pedido);
-        smsService.enviar(pedido);
-        pushService.enviar(pedido);
+        notifiers.forEach(n -> n.send(pedido));
+    }
+
+    /** Observer: reage ao evento publicado pelo PedidoService. */
+    @EventListener
+    public void onOrderCreated(OrderCreatedEvent event) {
+        enviarNotificacoes(event.pedido());
     }
 }

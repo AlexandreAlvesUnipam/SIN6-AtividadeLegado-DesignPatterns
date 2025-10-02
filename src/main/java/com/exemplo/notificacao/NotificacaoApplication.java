@@ -1,34 +1,51 @@
 package com.exemplo.notificacao;
 
+import com.exemplo.notificacao.service.PedidoService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.exemplo.notificacao.service.NotificacaoService;
-import com.exemplo.notificacao.model.Pedido;
+import java.util.Scanner;
 
 @SpringBootApplication
 public class NotificacaoApplication implements CommandLineRunner {
 
-    @Autowired
-    private NotificacaoService notificacaoService;
+    private final PedidoService pedidoService;
+
+    public NotificacaoApplication(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(NotificacaoApplication.class, args);
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        System.out.println("=== Sistema de Notificação de Pedidos ===");
+    public void run(String... args) {
+        System.out.println("=== Sistema de Notificação de Pedidos (CLI) ===");
+        System.out.println("Digite 'sair' para encerrar.");
 
-        Pedido pedido1 = new Pedido("João", 150.0);
-        Pedido pedido2 = new Pedido("Maria", 320.0);
-        Pedido pedido3 = new Pedido("Carlos", 80.0);
+        try (Scanner sc = new Scanner(System.in)) {
+            while (true) {
+                System.out.print("Cliente: ");
+                String cliente = sc.nextLine();
+                if (cliente == null || cliente.isBlank() || cliente.equalsIgnoreCase("sair")) break;
 
-        notificacaoService.enviarNotificacoes(pedido1);
-        notificacaoService.enviarNotificacoes(pedido2);
-        notificacaoService.enviarNotificacoes(pedido3);
+                System.out.print("Valor: ");
+                String v = sc.nextLine();
+                if (v == null || v.equalsIgnoreCase("sair")) break;
+
+                double valor;
+                try {
+                    valor = Double.parseDouble(v.replace(',', '.'));
+                } catch (NumberFormatException e) {
+                    System.out.println("Valor inválido. Tente novamente.");
+                    continue;
+                }
+
+                pedidoService.criarPedido(cliente, valor);
+            }
+        }
 
         System.out.println("=== Fim da execução ===");
     }

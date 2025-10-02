@@ -1,8 +1,8 @@
 package com.exemplo.notificacao.model;
 
 public class Pedido {
-    private String cliente;
-    private double valor;
+    private final String cliente;
+    private final double valor;
 
     public Pedido(String cliente, double valor) {
         this.cliente = cliente;
