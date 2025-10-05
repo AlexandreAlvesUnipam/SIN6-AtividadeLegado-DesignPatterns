@@ -24,7 +24,7 @@ public class NotificacaoApplication implements CommandLineRunner {
 
         Pedido pedido1 = new Pedido("João", 150.0);
         Pedido pedido2 = new Pedido("Maria", 320.0);
-        Pedido pedido3 = new Pedido("Carlos", 80.0);
+        Pedido pedido3 = new Pedido("Lucas", 42.0);
 
         notificacaoService.enviarNotificacoes(pedido1);
         notificacaoService.enviarNotificacoes(pedido2);
