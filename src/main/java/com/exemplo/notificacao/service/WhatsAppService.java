@@ -4,11 +4,11 @@ import com.exemplo.notificacao.model.Pedido;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PushService implements Notificador {
+public class WhatsAppService implements Notificador {
     
     @Override
     public void notificar(Pedido pedido) {
-        System.out.println("🔔 [PUSH] Enviando push para " + pedido.getCliente() + 
-                         " - Valor: R$ " + pedido.getValor());
+        System.out.println("💬 [WHATSAPP] para " + pedido.getCliente() + 
+                         " - R$ " + pedido.getValor());
     }
 }
