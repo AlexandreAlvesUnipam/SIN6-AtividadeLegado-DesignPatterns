@@ -3,22 +3,18 @@ package com.exemplo.notificacao.service;
 import com.exemplo.notificacao.model.Pedido;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NotificacaoService {
 
-    private final EmailService emailService;
-    private final SmsService smsService;
-    private final PushService pushService;
+    private final List<Notificador> notificadores;
 
-    public NotificacaoService(EmailService emailService, SmsService smsService, PushService pushService) {
-        this.emailService = emailService;
-        this.smsService = smsService;
-        this.pushService = pushService;
+    public NotificacaoService(List<Notificador> notificadores) {
+        this.notificadores = notificadores;
     }
 
     public void enviarNotificacoes(Pedido pedido) {
-        emailService.enviar(pedido);
-        smsService.enviar(pedido);
-        pushService.enviar(pedido);
+        notificadores.forEach(notificador -> notificador.enviar(pedido));
     }
 }
