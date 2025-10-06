@@ -1,15 +1,14 @@
 package com.exemplo.notificacao.model;
 
 public class Pedido {
-    private String cliente;
+    private Cliente cliente;
     private double valor;
 
-    public Pedido(String cliente, double valor) {
+    public Pedido(Cliente cliente, double valor) {
         this.cliente = cliente;
         this.valor = valor;
     }
-
-    public String getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 

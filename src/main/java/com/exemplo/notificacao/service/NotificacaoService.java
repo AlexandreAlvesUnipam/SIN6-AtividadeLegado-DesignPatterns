@@ -21,7 +21,6 @@ public class NotificacaoService {
     }
 
     public void enviarNotificacao(Pedido pedido1, String string) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'enviarNotificacao'");
     }
 }
