@@ -28,3 +28,16 @@ O formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 - `NotificacaoService` refatorado para seguir o **Observer Pattern**, removendo dependências diretas de `EmailService`, `SmsService` e `PushService`.
 - `EmailService`, `SmsService` e `PushService` alterados para implementar a interface `Notificador`.
 - `PedidoService` atualizado para utilizar `PedidoFactory` na criação de pedidos.
+
+## [1.2.0] - 2025-10-07
+
+### Adicionado
+- Inclusão de **logs (Logger)** substituindo `System.out.println`, melhorando o monitoramento e a rastreabilidade da aplicação.
+- Estrutura inicial adicionada para futura implementação do **Strategy Pattern**, permitindo escolher dinamicamente o tipo de notificação.
+
+### Corrigido
+- Correção no uso do construtor de `Pedido` ao integrar com `PedidoFactory`.
+
+### Modificado
+- `PedidoService` atualizado para utilizar `Logger` do `SLF4J`.
+- `NotificacaoService` revisado para facilitar futura extensão com o **Strategy Pattern**.
