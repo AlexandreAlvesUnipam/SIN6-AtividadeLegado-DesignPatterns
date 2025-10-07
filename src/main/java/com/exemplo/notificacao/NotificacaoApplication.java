@@ -4,15 +4,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.exemplo.notificacao.service.NotificacaoService;
-import com.exemplo.notificacao.model.Pedido;
+import com.exemplo.notificacao.service.PedidoService;
 
 @SpringBootApplication
 public class NotificacaoApplication implements CommandLineRunner {
 
+    private static final Logger logger = LoggerFactory.getLogger(NotificacaoApplication.class);
+
     @Autowired
-    private NotificacaoService notificacaoService;
+    private PedidoService pedidoService;
 
     public static void main(String[] args) {
         SpringApplication.run(NotificacaoApplication.class, args);
@@ -20,16 +23,12 @@ public class NotificacaoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("=== Sistema de Notificação de Pedidos ===");
+        logger.info("=== Sistema de Notificação de Pedidos Iniciado ===");
 
-        Pedido pedido1 = new Pedido("João", 150.0);
-        Pedido pedido2 = new Pedido("Maria", 320.0);
-        Pedido pedido3 = new Pedido("Carlos", 80.0);
+        pedidoService.criarPedido("João", 150.0);
+        pedidoService.criarPedido("Maria", 320.0);
+        pedidoService.criarPedido("Carlos", 80.0);
 
-        notificacaoService.enviarNotificacoes(pedido1);
-        notificacaoService.enviarNotificacoes(pedido2);
-        notificacaoService.enviarNotificacoes(pedido3);
-
-        System.out.println("=== Fim da execução ===");
+        logger.info("=== Fim da execução ===");
     }
 }

@@ -13,7 +13,11 @@ public class PedidoService {
     }
 
     public void criarPedido(String cliente, double valor) {
-        Pedido pedido = new Pedido(cliente, valor);
+        Pedido pedido = new Pedido.Builder()
+                .cliente(cliente)
+                .valor(valor)
+                .build();
+
         System.out.println("Pedido criado para o cliente: " + cliente);
         notificacaoService.enviarNotificacoes(pedido);
     }
